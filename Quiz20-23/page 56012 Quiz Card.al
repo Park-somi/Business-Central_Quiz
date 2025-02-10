@@ -121,9 +121,6 @@ page 56012 "Quiz Card"
                 begin
                     CurrPage.SetSelectionFilter(QuizRec);
 
-                    if QuizRec.Count() > 1 then
-                        Error('You must select one line for dimension setup');
-
                     if QuizRec.FindFirst() then begin
                         DefaultDimensionPage.SetSelectedQuizNo(QuizRec."Quiz No.");
                         if DefaultDimensionPage.RunModal() = Action::OK then begin
