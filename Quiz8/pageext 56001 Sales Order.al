@@ -8,6 +8,7 @@ pageextension 56001 SalesOrder extends "Sales Order"
             field("Customer Contact"; Rec."DXK Customer Contact")
             {
                 ApplicationArea = All;
+                ShowMandatory = true;
             }
             field("Customer Contact Name"; Rec."DXK Customer Contact Name")
             {

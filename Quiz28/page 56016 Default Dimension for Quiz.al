@@ -1,5 +1,6 @@
 page 56016 "Default Dimension for Quiz"
 {
+    Caption = 'Default Dimension for Quiz';
     PageType = List;
     SourceTable = "Default Dimension for Quiz";
 

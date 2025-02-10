@@ -5,6 +5,8 @@ page 56003 "Temp Posted Inv Custom"
     UsageCategory = Lists;
     SourceTable = "Temp Posted Inv Custom";
     SourceTableTemporary = true;
+    InsertAllowed = false;
+    DeleteAllowed = false;
 
     layout
     {
@@ -13,27 +15,35 @@ page 56003 "Temp Posted Inv Custom"
             // 필터링 필드
             group(Filters)
             {
-                field("Customer No. From"; CustomerNoFrom)
+                group(PostingDate)
                 {
-                    Caption = 'Customer No. From';
-                    ApplicationArea = All;
-                    TableRelation = Customer;
+                    Caption = 'Posting Date';
+                    field("Posting Date From"; PostingDateFrom)
+                    {
+                        Caption = 'Posting Date From';
+                        ApplicationArea = All;
+                    }
+                    field("Posting Date To"; PostingDateTo)
+                    {
+                        Caption = 'Posting Date To';
+                        ApplicationArea = All;
+                    }
                 }
-                field("Posting Date From"; PostingDateFrom)
+                group(Customer)
                 {
-                    Caption = 'Posting Date From';
-                    ApplicationArea = All;
-                }
-                field("Customer No. To"; CustomerNoTo)
-                {
-                    Caption = 'Customer No. To';
-                    ApplicationArea = All;
-                    TableRelation = Customer;
-                }
-                field("Posting Date To"; PostingDateTo)
-                {
-                    Caption = 'Posting Date To';
-                    ApplicationArea = All;
+                    Caption = 'Customer';
+                    field("Customer No. From"; CustomerNoFrom)
+                    {
+                        Caption = 'Customer No. From';
+                        ApplicationArea = All;
+                        TableRelation = Customer;
+                    }
+                    field("Customer No. To"; CustomerNoTo)
+                    {
+                        Caption = 'Customer No. To';
+                        ApplicationArea = All;
+                        TableRelation = Customer;
+                    }
                 }
             }
 
@@ -113,7 +123,7 @@ page 56003 "Temp Posted Inv Custom"
             {
                 Caption = 'Filter and Show';
                 ApplicationArea = All;
-                Image = Filter;
+                Image = Find;
 
                 trigger OnAction()
                 var
@@ -174,8 +184,7 @@ page 56003 "Temp Posted Inv Custom"
                                 until SalesInvoiceLine.Next() = 0;
                             end;
                         until SalesInvoiceHeader.Next() = 0;
-
-                    CurrPage.Update(false);
+                    Rec.FindFirst();
                 end;
             }
         }
@@ -215,6 +224,7 @@ page 56003 "Temp Posted Inv Custom"
                     until SalesInvoiceLine.Next() = 0;
                 end;
             until SalesInvoiceHeader.Next() = 0;
+        Rec.FindFirst();
     end;
 
     var

@@ -11,8 +11,8 @@ codeunit 56000 "PostSalesOrderShipment"
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnAfterInsertShipmentLine', '', true, true)]
     local procedure OnAfterInsertShipmentLine(var SalesHeader: Record "Sales Header"; var SalesLine: Record "Sales Line"; var SalesShptLine: record "Sales Shipment Line"; PreviewMode: Boolean; xSalesLine: Record "Sales Line")
     begin
-        SalesShptLine."DXK Customer Contact" := SalesHeader."DXK Customer Contact";
-        SalesShptLine."DXK Customer Contact Name" := SalesHeader."DXK Customer Contact Name";
+        SalesShptLine."DXK Customer Contact" := SalesLine."DXK Customer Contact";
+        SalesShptLine."DXK Customer Contact Name" := SalesLine."DXK Customer Contact Name";
         SalesShptLine.Modify();
     end;
 }

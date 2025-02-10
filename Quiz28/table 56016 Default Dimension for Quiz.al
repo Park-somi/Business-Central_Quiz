@@ -1,10 +1,14 @@
 table 56016 "Default Dimension for Quiz"
 {
+    Caption = 'Default Dimension for Quiz';
     DataClassification = ToBeClassified;
 
     fields
     {
-        field(56000; "Quiz No."; Code[20]) { }
+        field(56000; "Quiz No."; Code[20])
+        {
+            Caption = 'Quiz No.';
+        }
         field(56001; "Dimension Code"; Code[20])
         {
             Caption = 'Dimension Code';

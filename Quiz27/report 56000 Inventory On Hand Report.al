@@ -4,7 +4,7 @@ report 56000 "Inventory On Hand Report"
     Caption = 'Inventory On Hand Report';
     ApplicationArea = All;
     DefaultLayout = Word;
-    WordLayout = 'InventoryOnHandReport.docx';
+    WordLayout = '.\Quiz27\InventoryOnHandReport.docx';
 
     dataset
     {
@@ -18,20 +18,11 @@ report 56000 "Inventory On Hand Report"
             column(Location; Location) { }
             column(CurrentQty; "Current Qty") { }
 
-            // trigger OnAfterGetRecord()
-            // begin
-            //     if FilterItemNo <> '' then
-            //         if "Item No." <> FilterItemNo then
-            //             CurrReport.Skip();
-
-            //     if FilterLocation <> '' then
-            //         if Location <> FilterLocation then
-            //             CurrReport.Skip();
-
-            //     if HasAvailableQty then
-            //         if "Current Qty" <= 0 then
-            //             CurrReport.Skip();
-            // end;
+            trigger OnPreDataItem()
+            begin
+                if HasAvailableQty then
+                    InventoryOnHand.SetFilter("Current Qty", '>%1', 0);
+            end;
         }
     }
 
@@ -102,26 +93,14 @@ report 56000 "Inventory On Hand Report"
                                 TotalQty += ItemLedgerEntry.Quantity;
                             until ItemLedgerEntry.Next() = 0;
 
-                        if not HasAvailableQty then begin
-                            InventoryOnHand.Init();
-                            InventoryOnHand."No." := number;
-                            InventoryOnHand."Item No." := Item."No.";
-                            InventoryOnHand."Item Desc" := Item.Description;
-                            InventoryOnHand.Location := Location.Code;
-                            InventoryOnHand."Current Qty" := TotalQty;
-                            InventoryOnHand.Insert();
-                            number += 1;
-                        end else
-                            if TotalQty > 0 then begin
-                                InventoryOnHand.Init();
-                                InventoryOnHand."No." := number;
-                                InventoryOnHand."Item No." := Item."No.";
-                                InventoryOnHand."Item Desc" := Item.Description;
-                                InventoryOnHand.Location := Location.Code;
-                                InventoryOnHand."Current Qty" := TotalQty;
-                                InventoryOnHand.Insert();
-                                number += 1;
-                            end;
+                        InventoryOnHand.Init();
+                        InventoryOnHand."No." := number;
+                        InventoryOnHand."Item No." := Item."No.";
+                        InventoryOnHand."Item Desc" := Item.Description;
+                        InventoryOnHand.Location := Location.Code;
+                        InventoryOnHand."Current Qty" := TotalQty;
+                        InventoryOnHand.Insert();
+                        number += 1;
                     until Location.Next() = 0;
             until Item.Next = 0;
     end;

@@ -7,6 +7,7 @@ pageextension 56002 SalesOrderSubform extends "Sales Order Subform"
             field("Customer Contact"; Rec."DXK Customer Contact")
             {
                 ApplicationArea = All;
+                ShowMandatory = true;
             }
             field("Customer Contact Name"; Rec."DXK Customer Contact Name")
             {

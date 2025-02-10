@@ -20,6 +20,21 @@ page 56010 "Quiz Setup"
                 }
             }
         }
+
+        //데이터를 저장하는 페이지에는 기본적으로 아래 2개의 factbox 구성함.
+        area(factboxes)
+        {
+            systempart(Control1900383207; Links)
+            {
+                ApplicationArea = RecordLinks;
+                Visible = true;
+            }
+            systempart(Control1905767507; Notes)
+            {
+                ApplicationArea = Notes;
+                Visible = true;
+            }
+        }
     }
 
     trigger OnOpenPage()

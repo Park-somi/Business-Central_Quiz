@@ -8,7 +8,6 @@ tableextension 56002 SalesLine extends "Sales Line"
             trigger OnAfterValidate()
             var
                 SalesHeader: Record "Sales Header";
-                SalesOrder: Page "Sales Order";
             begin
                 if SalesHeader.Get("Document Type", "Document No.") then
                     if SalesHeader."DXK Customer Contact" <> '' then begin
@@ -25,16 +24,16 @@ tableextension 56002 SalesLine extends "Sales Line"
             Caption = 'Customer Contact';
             TableRelation = "DXK Customer Contact".Code;
 
-            // Quiz 10
             trigger OnValidate()
             var
                 SalesHeader: Record "Sales Header";
                 DXKCustomerContact: Record "DXK Customer Contact";
             begin
-                if SalesHeader.Get("Document Type", "Document No.") then begin
-                    if SalesHeader.Status = SalesHeader.Status::Released then
-                        Error('Release 상태이므로 수정할 수 없습니다.');
-                end;
+                // Quiz 10(Codeunit으로 대체)
+                // if SalesHeader.Get("Document Type", "Document No.") then begin
+                //     if SalesHeader.Status = SalesHeader.Status::Released then
+                //         Error('Release 상태이므로 수정할 수 없습니다.');
+                // end;
 
                 // Quiz 9 피드백
                 if DXKCustomerContact.Get("DXK Customer Contact") then begin
@@ -47,6 +46,7 @@ tableextension 56002 SalesLine extends "Sales Line"
         field(56001; "DXK Customer Contact Name"; Text[30])
         {
             Caption = 'Customer Contact Name';
+            Editable = false;
         }
     }
 }

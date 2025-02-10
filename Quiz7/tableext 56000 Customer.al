@@ -20,6 +20,7 @@ tableextension 56000 Customer extends "Customer"
         field(56001; "DXK Customer Contact Name"; Text[30])
         {
             Caption = 'Customer Contact Name';
+            Editable = false;
         }
     }
 }

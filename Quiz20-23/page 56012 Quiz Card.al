@@ -1,5 +1,6 @@
 page 56012 "Quiz Card"
 {
+    Caption = 'Quiz Card';
     PageType = Card;
     SourceTable = "Quiz";
 
@@ -12,12 +13,12 @@ page 56012 "Quiz Card"
                 field("Quiz No."; Rec."Quiz No.")
                 {
                     ApplicationArea = All;
-                    Editable = false;
+                    AssistEdit = true;
                 }
                 field("Quiz Name"; Rec."Quiz Name")
                 {
                     ApplicationArea = All;
-                    Editable = IsEditQuizName;
+                    Editable = (Rec.Status = Rec.Status::Open);
                 }
                 field(Status; Rec.Status)
                 {
@@ -36,6 +37,22 @@ page 56012 "Quiz Card"
                 ApplicationArea = All;
                 SubPageLink = "Document No." = field("Quiz No.");
                 SubPageView = sorting("Document No.", "Comment No.");
+                Editable = (Rec.Status = Rec.Status::Open); // editable은 이렇게도 가능
+            }
+        }
+
+        //데이터를 저장하는 페이지에는 기본적으로 아래 2개의 factbox 구성함.
+        area(factboxes)
+        {
+            systempart(Control1900383207; Links)
+            {
+                ApplicationArea = RecordLinks;
+                Visible = true;
+            }
+            systempart(Control1905767507; Notes)
+            {
+                ApplicationArea = Notes;
+                Visible = true;
             }
         }
     }
@@ -54,16 +71,16 @@ page 56012 "Quiz Card"
             {
                 Caption = 'Change Status';
                 ApplicationArea = All;
-                Image = Edit;
+                Image = Change;
 
                 trigger OnAction()
                 begin
                     if Rec.Status = Rec.Status::Open then begin
                         Rec.Status := Rec.Status::Released;
-                        IsEditQuizName := false;
+                        // IsEditQuizName := false;
                     end else begin
                         Rec.Status := Rec.Status::Open;
-                        IsEditQuizName := true;
+                        // IsEditQuizName := true;
                     end;
                 end;
             }
@@ -81,10 +98,8 @@ page 56012 "Quiz Card"
                 begin
                     CurrPage.SetSelectionFilter(QuizRec); // 선택된 레코드를 가져옴
 
-                    if QuizRec.FindFirst() then begin
-                        CopyQuizReport.SetSelectedQuizNo(QuizRec."Quiz No.");
-                        CopyQuizReport.RunModal();
-                    end;
+                    CopyQuizReport.SetSelectedQuizNo(QuizRec."Quiz No.");
+                    CopyQuizReport.RunModal();
                 end;
             }
 
@@ -105,6 +120,9 @@ page 56012 "Quiz Card"
                     DimValue: Record "Dimension Value";
                 begin
                     CurrPage.SetSelectionFilter(QuizRec);
+
+                    if QuizRec.Count() > 1 then
+                        Error('You must select one line for dimension setup');
 
                     if QuizRec.FindFirst() then begin
                         DefaultDimensionPage.SetSelectedQuizNo(QuizRec."Quiz No.");
@@ -129,28 +147,4 @@ page 56012 "Quiz Card"
             }
         }
     }
-
-    trigger OnNewRecord(BelowxRec: Boolean)
-    var
-        QuizSetup: Record "Quiz Setup";
-        NoSeriesMgt: Codeunit "NoSeriesManagement";
-    begin
-        // Quiz Setup에서 Quiz Nos. 값 가져오기
-        if QuizSetup.Get() then begin
-            Rec.Init();
-            Rec."Quiz No." := NoSeriesMgt.GetNextNo(QuizSetup."Quiz Nos.", WORKDATE, true); // Quiz Nos. 번호 시리즈 사용
-        end else
-            Error('Quiz Setup 레코드가 존재하지 않습니다. 관리자를 확인하세요.');
-    end;
-
-    trigger OnOpenPage()
-    begin
-        if Rec.Status = Rec.Status::Open then
-            IsEditQuizName := true
-        else
-            IsEditQuizName := false;
-    end;
-
-    var
-        IsEditQuizName: Boolean;
 }

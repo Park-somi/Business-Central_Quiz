@@ -6,6 +6,7 @@ page 56008 "Multiple Customers"
     SourceTable = "Multiple Customers";
     Caption = 'Multiple Customers';
     InsertAllowed = false;
+    Editable = false;
 
     layout
     {

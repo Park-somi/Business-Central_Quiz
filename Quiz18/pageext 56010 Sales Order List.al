@@ -5,8 +5,8 @@ pageextension 56010 SalesOrderList extends "Sales Order List"
         // Post 버튼 수정
         modify(Post)
         {
-            Visible = false;
-            Enabled = false;
+            Visible = false; // Post 버튼 숨기기
+            Enabled = false; // Post 버튼 비활성화
         }
 
         // 숨겨져 있는 버튼 보여주기

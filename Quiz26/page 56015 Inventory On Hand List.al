@@ -6,7 +6,8 @@ page 56015 "Inventory On Hand List"
     SourceTable = "Inventory On Hand List";
     SourceTableTemporary = true;
     Caption = 'Inventory On Hand List';
-    // SourceTableView = sorting("Item No.", Location, "Current Qty");
+    InsertAllowed = false;
+    DeleteAllowed = false;
 
     layout
     {
@@ -49,6 +50,8 @@ page 56015 "Inventory On Hand List"
             }
             repeater(Group)
             {
+                Editable = false;
+
                 field("Item No."; Rec."Item No.") { ApplicationArea = All; Editable = false; }
                 field("Item Desc"; Rec."Item Desc") { ApplicationArea = All; Editable = false; }
                 field("Location"; Rec.Location) { ApplicationArea = All; Editable = false; }

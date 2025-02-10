@@ -12,8 +12,8 @@ page 56009 "Customer Selection"
         {
             repeater(Group)
             {
-                field("No."; Rec."No.") { TableRelation = Customer."No."; ApplicationArea = All; }
-                field("Name"; Rec."Name") { TableRelation = Customer.Name; ApplicationArea = All; }
+                field("No."; Rec."No.") { ApplicationArea = All; }
+                field("Name"; Rec."Name") { ApplicationArea = All; }
             }
         }
     }

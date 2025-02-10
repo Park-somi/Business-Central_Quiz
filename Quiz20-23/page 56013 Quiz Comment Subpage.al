@@ -3,9 +3,9 @@ page 56013 "Quiz Comment Subpage"
     PageType = ListPart;
     ApplicationArea = All;
     SourceTable = "Quiz Comment";
-    Caption = 'Comment';
-    DelayedInsert = true;
-    AutoSplitKey = true;
+    Caption = 'Quiz Comment';
+    DelayedInsert = true; // Validate 먼저 실행 후 insert. false인 경우, 빈 레코드 DB에 저장 후 Validate
+    AutoSplitKey = true; // Comment 사이에 새로운 Comment 추가 시, 자동으로 Comment No. 분할 -> 추가한 위치에 새로운 Comment 추가
 
     layout
     {
@@ -18,39 +18,17 @@ page 56013 "Quiz Comment Subpage"
                     ApplicationArea = All;
                     MultiLine = true;
 
-                    // Status가 Open인 경우, '수정' 불가
-                    trigger OnValidate()
-                    var
-                        Quiz: Record Quiz;
-                    begin
-                        Quiz.Reset();
-                        if Quiz.Get(Rec."Document No.") then
-                            Quiz.TestField(Status, Quiz.Status::Open);
-                    end;
+                    // TestField 함수
+                    // (1) 단순 비어있지 않음 체크
+                    // TestField("Field Name");
+
+                    // (2) 특정 값과 일치 체크
+                    // TestField("Status", Status::Open);
+
+                    // (3) 커스텀 에러 메시지
+                    // TestField("Field Name", '', '필드가 비어있으면 안됩니다.');
                 }
             }
         }
     }
-
-    // Status가 Open인 경우, '추가' 불가
-    trigger OnInsertRecord(BelowxRec: Boolean): Boolean
-    var
-        Quiz: Record Quiz;
-        PrevLineNo: Integer;
-        NextLineNo: Integer;
-    begin
-        Quiz.Reset();
-        if Quiz.Get(Rec."Document No.") then
-            Quiz.TestField(Status, Quiz.Status::Open);
-    end;
-
-    // Status가 Open인 경우, '삭제' 불가
-    trigger OnDeleteRecord(): Boolean
-    var
-        Quiz: Record Quiz;
-    begin
-        Quiz.Reset();
-        if Quiz.Get(Rec."Document No.") then
-            Quiz.TestField(Status, Quiz.Status::Open);
-    end;
 }
